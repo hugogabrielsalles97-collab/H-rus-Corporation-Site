@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3030/)",
+      "mcp__Claude_in_Chrome__navigate",
+      "Bash(Start-Process \"msedge.exe\" \"http://localhost:3030\")",
+      "Bash(powershell -Command \"Start-Process 'msedge' 'http://localhost:3030'\")",
+      "Bash(powershell -Command \"Start-Process 'msedge' '--new-window http://localhost:3030 --start-maximized'\")",
+      "Bash(powershell -Command 'Add-Type -TypeDefinition '\\\\''using System;using System.Runtime.InteropServices;public class Win{[DllImport\\(\"user32.dll\"\\)]public static extern bool ShowWindow\\(IntPtr h,int n\\);[DllImport\\(\"user32.dll\"\\)]public static extern IntPtr FindWindow\\(string c,string t\\);}'\\\\''; $h=[Win]::FindWindow\\('\\\\''Chrome_WidgetWin_1'\\\\'','\\\\''Hórus Corporation — Gestão Inteli… - Microsoft Edge'\\\\''\\); [Win]::ShowWindow\\($h, 3\\)')",
+      "Bash(powershell -Command \"Start-Process 'chrome' '--new-window http://localhost:3030 --start-maximized'\")",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)"
+    ]
+  }
+}

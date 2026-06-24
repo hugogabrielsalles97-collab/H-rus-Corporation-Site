@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hórus Corporation — Gestão Inteligente de Obras | LPS · AWP · Lean Construction</title>
+  <meta name="description" content="Plataforma de gestão de obras com foco em planejamento, melhoria contínua, Lean Construction, Last Planner System e Advanced Work Packaging.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Canvas de fundo -->
+  <div class="sticky-viewport">
+    <canvas id="bridge-canvas"></canvas>
+    <div class="canvas-overlay"></div>
+    <!-- Scan line overlay -->
+    <div class="scan-lines"></div>
+  </div>
+
+  <!-- Loader -->
+  <div class="loader-container">
+    <div class="loader-bar-wrap">
+      <div class="loader-bar"></div>
+    </div>
+    <div class="loader-text">INICIALIZANDO SISTEMA <span class="loader-percent">0%</span></div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="#" class="logo">
+      <img src="logo-horus.png" alt="Hórus Logo" class="logo-img">
+      HÓRUS <span>CORPORATION</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#">Início</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#solucoes">Soluções</a></li>
+        <li><a href="#contato">Contato</a></li>
+        <li><a href="#contato" class="nav-btn">Agendar Demo</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ========== HERO — SCROLL DA PONTE ========== -->
+  <section class="scroll-hero-container">
+    <div class="scroll-content">
+
+      <!-- Bloco 1: Hero principal -->
+      <div class="scroll-card-wrapper pos-1">
+        <div class="scroll-card active">
+          <div class="hero-tag">
+            <span class="tag-dot"></span>
+            <span>Gestão de Obras · LPS · AWP · Lean</span>
+          </div>
+          <h1 class="hero-title">
+            <span class="line-wrap"><span class="line">Onde Planejamento</span></span>
+            <span class="line-wrap"><span class="line accent">encontra a</span></span>
+            <span class="line-wrap"><span class="line">Execução</span></span>
+          </h1>
+          <p class="hero-sub">Gestão integrada de grandes obras com Last Planner System, Advanced Work Packaging e Lean Construction. Do planejamento estratégico ao controle diário de campo.</p>
+          <div class="btn-group">
+            <a href="#solucoes" class="btn-primary">Conhecer Soluções</a>
+            <a href="#contato" class="btn-ghost">Fale Conosco</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloco 2: LPS -->
+      <div class="scroll-card-wrapper pos-2">
+        <div class="scroll-card">
+          <div class="step-counter">01 / 03</div>
+          <div class="step-label">Last Planner System</div>
+          <h2 class="section-title">
+            <span class="line-wrap"><span class="line">Planejamento</span></span>
+            <span class="line-wrap"><span class="line accent">Colaborativo</span></span>
+          </h2>
+          <p class="hero-sub">Fluxo digital completo do LPS: phase planning, lookahead, weekly work plan e análise de restrições. PPC automático e causas raiz em tempo real.</p>
+          <a href="#solucoes" class="btn-primary">Ver Módulo LPS</a>
+        </div>
+      </div>
+
+      <!-- Bloco 3: AWP -->
+      <div class="scroll-card-wrapper pos-3">
+        <div class="scroll-card align-right">
+          <div class="step-counter">02 / 03</div>
+          <div class="step-label">Advanced Work Packaging</div>
+          <h2 class="section-title">
+            <span class="line-wrap"><span class="line">Pacotes de</span></span>
+            <span class="line-wrap"><span class="line accent">Trabalho</span></span>
+          </h2>
+          <p class="hero-sub">Hierarquia CWP → EWP → IWP com rastreabilidade total. Controle de liberação, checklist de pré-requisitos e sequenciamento por frente de serviço.</p>
+          <a href="#solucoes" class="btn-primary">Ver Módulo AWP</a>
+        </div>
+      </div>
+
+      <!-- Bloco 4: Lean -->
+      <div class="scroll-card-wrapper pos-4">
+        <div class="scroll-card">
+          <div class="step-counter">03 / 03</div>
+          <div class="step-label">Lean Construction</div>
+          <h2 class="section-title">
+            <span class="line-wrap"><span class="line">Melhoria</span></span>
+            <span class="line-wrap"><span class="line accent">Contínua</span></span>
+          </h2>
+          <p class="hero-sub">Identifique perdas, monitore o fluxo de valor e implemente ciclos PDCA no canteiro. Indicadores Lean, making-do e gestão visual integrada.</p>
+          <a href="#contato" class="btn-primary">Solicitar Orçamento</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Indicador de scroll -->
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>SCROLL</span>
+    </div>
+  </section>
+
+  <!-- Transição hero → conteúdo -->
+  <div class="hero-transition"></div>
+
+  <!-- ========== QUEM SOU — APRESENTAÇÃO HERO ========== -->
+  <section class="section-presentation" id="sobre">
+    <div class="presentation-overlay"></div>
+    <div class="presentation-content reveal">
+      <span class="section-overline">Quem Está por Trás</span>
+      <h2 class="presentation-title">Eng. Hugo Sales</h2>
+      <p class="presentation-role">Engenheiro Civil especializado em Planejamento de Obras de Grande Porte</p>
+      <p class="presentation-text">Com mais de <strong>5 anos de experiência</strong> em planejamento e controle de obras de infraestrutura pesada, atuo diretamente em empreendimentos de alta complexidade — <strong>viadutos, pontes, solo grampeado, tirantes, gabiões, terramesh, pavimentação, terraplenagem e drenagem</strong>.</p>
+      <p class="presentation-text">Minha atuação combina as metodologias <strong>Last Planner System (LPS)</strong> e <strong>Advanced Work Packaging (AWP)</strong> com soluções tecnológicas sob medida — eliminando retrabalho e acelerando decisões em campo. A Hórus Corporation nasce dessa vivência diária de quem planeja e executa grandes obras.</p>
+      <div class="presentation-tags">
+        <span class="ptag">LPS</span>
+        <span class="ptag">AWP</span>
+        <span class="ptag">Lean Construction</span>
+        <span class="ptag">PDCA</span>
+        <span class="ptag">Infraestrutura Pesada</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SOLUÇÕES ========== -->
+  <section class="section-solutions" id="solucoes">
+    <div class="section-header reveal">
+      <span class="section-overline">Soluções</span>
+      <h2>Módulos para Obras Complexas</h2>
+      <p>Cada módulo resolve dores reais de quem planeja e executa grandes obras de infraestrutura.</p>
+    </div>
+
+    <div class="solutions-grid">
+
+      <div class="sol-card reveal">
+        <div class="sol-number">01</div>
+        <div class="sol-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h2M12 14h2M8 17h2M12 17h2"/></svg>
+        </div>
+        <span class="sol-tag">Módulo LPS</span>
+        <h3>Last Planner System</h3>
+        <p>Fluxo digital completo do LPS. Phase planning, lookahead, weekly plan com cálculo automático de PPC e rastreio inteligente de restrições.</p>
+        <ul class="sol-list">
+          <li>Planejamento de fase e lookahead</li>
+          <li>Weekly work plan com responsáveis</li>
+          <li>PPC automático e causas raiz</li>
+          <li>Gestão de restrições</li>
+        </ul>
+        <div class="sol-glow"></div>
+      </div>
+
+      <div class="sol-card reveal reveal-delay-1">
+        <div class="sol-number">02</div>
+        <div class="sol-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <span class="sol-tag">Módulo AWP</span>
+        <h3>Advanced Work Packaging</h3>
+        <p>Gestão estruturada de pacotes de trabalho com controle de liberação, pré-requisitos e sequenciamento de frentes de serviço.</p>
+        <ul class="sol-list">
+          <li>Hierarquia CWP → EWP → IWP</li>
+          <li>Checklist de liberação</li>
+          <li>Path of Construction integrado</li>
+          <li>Rastreabilidade por QR Code</li>
+        </ul>
+        <div class="sol-glow"></div>
+      </div>
+
+      <div class="sol-card reveal reveal-delay-2">
+        <div class="sol-number">03</div>
+        <div class="sol-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </div>
+        <span class="sol-tag">Módulo Lean</span>
+        <h3>Lean & Melhoria Contínua</h3>
+        <p>Ferramentas de melhoria contínua para o canteiro. Ciclos PDCA, análise de making-do, fluxo de valor e KPIs de performance.</p>
+        <ul class="sol-list">
+          <li>Ciclos PDCA com evidências</li>
+          <li>Mapeamento de fluxo de valor</li>
+          <li>Identificação de making-do</li>
+          <li>KPIs Lean em tempo real</li>
+        </ul>
+        <div class="sol-glow"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== DIFERENCIAIS ========== -->
+  <section class="section-features" id="diferenciais">
+    <div class="features-inner">
+      <div class="feature-item reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>
+        </div>
+        <h3>Offline-First</h3>
+        <p>Opere em túneis e áreas remotas. Dados salvos localmente, sincronização automática ao detectar rede.</p>
+      </div>
+      <div class="feature-item reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3>Aumento no PPC</h3>
+        <p>Nossos clientes reportam aumento médio de 35% no Percentual de Planos Concluídos após a implantação.</p>
+      </div>
+      <div class="feature-item reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Redução de Restrições</h3>
+        <p>Diminuição significativa de restrições pendentes com gestão preditiva e dashboards de BI em tempo real.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA / CONTATO ========== -->
+  <section class="section-cta" id="contato">
+    <div class="cta-inner reveal">
+      <div class="cta-text">
+        <span class="section-overline">Contato</span>
+        <h2>Pronto para transformar a <span class="neon-text">gestão da sua obra</span>?</h2>
+        <p>Agende uma demonstração e veja como integrar LPS, AWP e Lean Construction em uma única plataforma projetada para a complexidade de grandes obras.</p>
+        <div class="cta-badges">
+          <span class="badge">LPS</span>
+          <span class="badge">AWP</span>
+          <span class="badge">Lean</span>
+          <span class="badge">PDCA</span>
+        </div>
+      </div>
+
+      <form class="cta-form" action="#" onsubmit="event.preventDefault(); alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');">
+        <div class="form-group">
+          <input type="text" placeholder="Seu Nome" required>
+        </div>
+        <div class="form-group">
+          <input type="email" placeholder="E-mail Corporativo" required>
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Construtora / Empresa" required>
+        </div>
+        <div class="form-group">
+          <textarea placeholder="Conte sobre sua obra e quais metodologias deseja implementar..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary btn-full">Agendar Demonstração</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <a href="#" class="logo">
+        <img src="logo-horus.png" alt="Hórus Logo" class="logo-img">
+        HÓRUS <span>CORPORATION</span>
+      </a>
+      <ul class="footer-links">
+        <li><a href="#">Início</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#solucoes">Soluções</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+      <p class="footer-copy">&copy; 2026 Hórus Corporation · Gestão Inteligente de Obras · LPS · AWP · Lean Construction</p>
+    </div>
+  </footer>
+
+
+  <script src="app.js"></script>
+</body>
+</html>

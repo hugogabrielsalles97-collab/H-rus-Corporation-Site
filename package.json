@@ -1,0 +1,20 @@
+{
+  "name": "master-civil-site",
+  "version": "1.0.0",
+  "description": "Landing page para aplicativos de engenharia civil pesada.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve ."
+  },
+  "keywords": [
+    "engenharia",
+    "construcao-civil",
+    "apps"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "serve": "^14.2.4"
+  }
+}
