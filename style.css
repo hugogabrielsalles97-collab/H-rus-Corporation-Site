@@ -955,4 +955,73 @@ footer {
 
   .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
   .footer-links { flex-wrap: wrap; gap: 1.2rem; }
+
+  .download-box { flex-direction: column; align-items: flex-start; gap: 1.8rem; padding: 2rem 1.6rem; }
+}
+
+/* ========== SEÇÃO DE DOWNLOAD ========== */
+.section-download {
+  position: relative;
+  z-index: 2;
+  padding: 5rem 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.download-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  max-width: 900px;
+  width: 100%;
+  padding: 2.8rem 3rem;
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-secondary));
+  border: 1px solid var(--border-cyan);
+  border-radius: 8px;
+  box-shadow: 0 0 50px var(--neon-cyan-glow);
+}
+
+.download-info { flex: 1; }
+
+.download-info h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 0.4rem 0 0.7rem;
+  color: var(--text-primary);
+}
+
+.download-info p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 460px;
+}
+
+.download-meta {
+  list-style: none;
+  display: flex;
+  gap: 1.6rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.download-meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+.download-meta svg { color: var(--neon-cyan); }
+
+.btn-download {
+  opacity: 1;
+  transform: none;
+  white-space: nowrap;
+  padding: 0.85rem 1.8rem;
+  font-size: 0.85rem;
 }
