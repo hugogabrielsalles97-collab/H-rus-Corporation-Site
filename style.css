@@ -1255,3 +1255,89 @@ footer {
   letter-spacing: 0.05em;
   color: var(--text-tertiary);
 }
+
+/* ============================================================
+   ÁREA DO MEMBRO (area.html)
+   ============================================================ */
+.area-hero { height: 340vh; }
+
+.nav-greeting {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+}
+.nav-greeting strong { color: var(--neon-cyan); font-weight: 600; margin-left: 0.3rem; }
+
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--border-dim);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.member-card {
+  position: relative;
+  background: var(--bg-elevated);
+  padding: 2.6rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: background 0.4s ease;
+}
+.member-card:hover { background: var(--bg-surface); }
+
+.member-icon {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-cyan);
+  border-radius: 5px;
+  color: var(--neon-cyan);
+  background: var(--neon-cyan-glow);
+  margin-bottom: 1.3rem;
+  transition: box-shadow 0.3s ease;
+}
+.member-card:hover .member-icon { box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+
+.member-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: var(--text-primary);
+}
+.member-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin-bottom: 1.4rem;
+  flex: 1;
+}
+.member-card .btn-download { margin-top: auto; }
+
+.tutorial-soon { opacity: 0.85; }
+.soon-badge {
+  display: inline-block;
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--border-orange);
+  background: var(--gold-dim);
+  padding: 0.4rem 0.8rem;
+  border-radius: 3px;
+}
+
+@media (max-width: 900px) {
+  .member-grid { grid-template-columns: 1fr; }
+  .member-card { border-bottom: 1px solid var(--border-dim); }
+  .member-card:last-child { border-bottom: none; }
+}

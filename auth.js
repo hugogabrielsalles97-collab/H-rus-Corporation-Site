@@ -1,54 +1,26 @@
 /* =====================================================================
-   AUTENTICAÇÃO (Supabase) + LIBERAÇÃO DO DOWNLOAD
-   =====================================================================
-   COMO CONFIGURAR:
-   1. Em SUPABASE_URL, a URL do seu projeto Supabase.
-      (painel → Settings → Data API → "Project URL")
-   2. A chave publishable já está preenchida (pode ficar pública).
+   PÁGINA INICIAL — modal de login / cadastro
+   Usa o cliente "sb" definido em supabase-config.js.
+   Após o login, leva o usuário para a área do membro (area.html).
    ===================================================================== */
-
-const SUPABASE_URL = "https://pjzhbgsyoiidelmmhnjc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_sZmVrKddQykoPLAaB4S4Sw_x8EEFEwe";
-
-// URL do Cloudflare Worker que protege o download (recomendado).
-// Depois de publicar o Worker (veja a pasta /worker), cole a URL aqui.
-// Ex.: "https://horus-download.SEU-SUBDOMINIO.workers.dev"
-const WORKER_URL = "https://horus-download.hugogabrielsalles97.workers.dev";
-
-// Link público direto no R2 — usado APENAS enquanto o WORKER_URL estiver
-// vazio. Assim que o Worker for configurado, deixe o bucket privado e
-// este link deixa de ser usado.
-const DOWNLOAD_URL = "https://pub-f6e4a6b969db4ef8a2efd42fda361926.r2.dev/Horus-portatil.zip";
-
-// ---------------------------------------------------------------------
-
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = (id) => document.getElementById(id);
 const show = (el) => el && el.classList.remove("hidden");
 const hide = (el) => el && el.classList.add("hidden");
 
+const AREA_URL = "area.html";
+
 const els = {
-  // modal
   modal:      $("auth-modal"),
-  closeBtn:   $("auth-close"),
   openBtn:    $("open-auth"),
-  // formulários
   formLogin:  $("form-login"),
   formSignup: $("form-signup"),
   loginEmail:     $("login-email"),
   loginPassword:  $("login-password"),
+  signupName:     $("signup-name"),
   signupEmail:    $("signup-email"),
   signupPassword: $("signup-password"),
   msg:        $("auth-msg"),
-  // seção de download
-  loading:    $("auth-loading"),
-  locked:     $("dl-locked"),
-  unlocked:   $("dl-unlocked"),
-  loginTrigger: $("dl-login-trigger"),
-  userEmail:  $("user-email"),
-  downloadBtn:$("download-btn"),
-  logoutBtn:  $("logout-btn"),
 };
 
 let isLogged = false;
@@ -58,7 +30,6 @@ function setMessage(text, type) {
   els.msg.className = "auth-msg" + (type ? " " + type : "");
 }
 
-// Traduz os erros mais comuns do Supabase para português
 function traduzErro(err) {
   const m = (err && err.message ? err.message : String(err)).toLowerCase();
   if (m.includes("invalid login credentials")) return "E-mail ou senha incorretos.";
@@ -77,8 +48,8 @@ function openModal(view) {
   show(els.modal);
   els.modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
-  const firstInput = (view === "signup" ? els.signupEmail : els.loginEmail);
-  setTimeout(() => firstInput && firstInput.focus(), 50);
+  const first = (view === "signup" ? els.signupName : els.loginEmail);
+  setTimeout(() => first && first.focus(), 50);
 }
 
 function closeModal() {
@@ -89,45 +60,23 @@ function closeModal() {
 
 function switchView(view) {
   setMessage("");
-  if (view === "signup") {
-    show(els.formSignup); hide(els.formLogin);
-  } else {
-    show(els.formLogin); hide(els.formSignup);
-  }
+  if (view === "signup") { show(els.formSignup); hide(els.formLogin); }
+  else { show(els.formLogin); hide(els.formSignup); }
 }
 
-/* ----- Estado de login na seção de download ----- */
-function render(session) {
-  hide(els.loading);
+/* ----- Botão da navbar reflete o estado ----- */
+function renderNav(session) {
   isLogged = !!(session && session.user);
-  if (isLogged) {
-    hide(els.locked);
-    show(els.unlocked);
-    els.userEmail.textContent = session.user.email;
-    els.openBtn.textContent = "Sair";
-  } else {
-    hide(els.unlocked);
-    show(els.locked);
-    els.openBtn.textContent = "Entrar";
-  }
+  els.openBtn.textContent = isLogged ? "Minha Área" : "Entrar";
 }
 
 /* ----- Eventos ----- */
-
-// Botão da navbar: abre login (deslogado) ou faz logout (logado)
-els.openBtn.addEventListener("click", async (e) => {
+els.openBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  if (isLogged) {
-    await sb.auth.signOut();
-  } else {
-    openModal("login");
-  }
+  if (isLogged) window.location.href = AREA_URL;
+  else openModal("login");
 });
 
-// Botão "Entrar para baixar" da seção de download
-els.loginTrigger.addEventListener("click", () => openModal("login"));
-
-// Fechar modal (X, backdrop)
 els.modal.querySelectorAll("[data-close]").forEach((el) =>
   el.addEventListener("click", closeModal)
 );
@@ -135,12 +84,10 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && !els.modal.classList.contains("hidden")) closeModal();
 });
 
-// Alternar login <-> cadastro
 els.modal.querySelectorAll(".auth-switch-btn").forEach((btn) =>
   btn.addEventListener("click", () => switchView(btn.dataset.go))
 );
 
-// Mostrar / ocultar senha
 els.modal.querySelectorAll(".auth-eye").forEach((btn) => {
   btn.addEventListener("click", () => {
     const input = $(btn.dataset.eye);
@@ -150,21 +97,22 @@ els.modal.querySelectorAll(".auth-eye").forEach((btn) => {
   });
 });
 
-// Cadastro
+// Cadastro (com nome)
 els.formSignup.addEventListener("submit", async (e) => {
   e.preventDefault();
   setMessage("Criando conta...");
   const { data, error } = await sb.auth.signUp({
     email: els.signupEmail.value.trim(),
     password: els.signupPassword.value,
+    options: { data: { full_name: els.signupName.value.trim() } },
   });
   if (error) { setMessage(traduzErro(error), "error"); return; }
   if (data.session) {
-    setMessage("Conta criada com sucesso!", "success");
+    window.location.href = AREA_URL;
   } else {
     setMessage("Conta criada! Enviamos um link de confirmação para o seu e-mail. Confirme e depois faça login.", "success");
+    els.formSignup.reset();
   }
-  els.formSignup.reset();
 });
 
 // Login
@@ -176,38 +124,13 @@ els.formLogin.addEventListener("submit", async (e) => {
     password: els.loginPassword.value,
   });
   if (error) { setMessage(traduzErro(error), "error"); return; }
-  setMessage("");
-  els.formLogin.reset();
-  closeModal();
+  window.location.href = AREA_URL;
 });
 
-// Logout (botão dentro da seção de download)
-els.logoutBtn.addEventListener("click", () => sb.auth.signOut());
-
-// Download — só dispara com sessão ativa
-els.downloadBtn.addEventListener("click", async (e) => {
-  e.preventDefault();
-  const { data } = await sb.auth.getSession();
-  if (data.session && data.session.user) {
-    if (WORKER_URL) {
-      // Proteção real: o Worker valida o token antes de entregar o arquivo
-      const token = encodeURIComponent(data.session.access_token);
-      window.location.href = `${WORKER_URL}?token=${token}`;
-    } else {
-      // Fallback: link público direto (enquanto o Worker não está configurado)
-      window.location.href = DOWNLOAD_URL;
-    }
-  } else {
-    render(null);
-    openModal("login");
-    setMessage("Sua sessão expirou. Entre novamente para baixar.", "error");
-  }
-});
-
-/* ----- Estado inicial + reação a login/logout ----- */
+/* ----- Estado inicial ----- */
 (async () => {
   const { data } = await sb.auth.getSession();
-  render(data.session);
+  renderNav(data.session);
 })();
 
-sb.auth.onAuthStateChange((_event, session) => render(session));
+sb.auth.onAuthStateChange((_event, session) => renderNav(session));
