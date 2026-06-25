@@ -13,7 +13,7 @@ const SUPABASE_KEY = "sb_publishable_sZmVrKddQykoPLAaB4S4Sw_x8EEFEwe";
 // URL do Cloudflare Worker que protege o download (recomendado).
 // Depois de publicar o Worker (veja a pasta /worker), cole a URL aqui.
 // Ex.: "https://horus-download.SEU-SUBDOMINIO.workers.dev"
-const WORKER_URL = "";
+const WORKER_URL = "https://horus-download.hugogabrielsalles97.workers.dev";
 
 // Link público direto no R2 — usado APENAS enquanto o WORKER_URL estiver
 // vazio. Assim que o Worker for configurado, deixe o bucket privado e
