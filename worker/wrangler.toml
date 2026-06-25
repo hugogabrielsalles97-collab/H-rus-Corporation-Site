@@ -1,0 +1,19 @@
+# Configuração do Cloudflare Worker (deploy via CLI: "npx wrangler deploy")
+# Se preferir, dá pra fazer tudo pelo painel — veja o README.md desta pasta.
+
+name = "horus-download"
+main = "worker.js"
+compatibility_date = "2024-12-01"
+
+# Binding do bucket R2.
+# IMPORTANTE: confirme o nome exato do bucket no painel do R2.
+# Pelo endpoint S3 da sua conta, o nome interno é "horus".
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "horus"
+
+[vars]
+SUPABASE_URL = "https://pjzhbgsyoiidelmmhnjc.supabase.co"
+SUPABASE_ANON_KEY = "sb_publishable_sZmVrKddQykoPLAaB4S4Sw_x8EEFEwe"
+FILE_KEY = "Horus-portatil.zip"
+ALLOW_ORIGIN = "*"

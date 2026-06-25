@@ -10,7 +10,14 @@
 const SUPABASE_URL = "https://pjzhbgsyoiidelmmhnjc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_sZmVrKddQykoPLAaB4S4Sw_x8EEFEwe";
 
-// Link do arquivo no Cloudflare R2 (só é usado depois do login)
+// URL do Cloudflare Worker que protege o download (recomendado).
+// Depois de publicar o Worker (veja a pasta /worker), cole a URL aqui.
+// Ex.: "https://horus-download.SEU-SUBDOMINIO.workers.dev"
+const WORKER_URL = "";
+
+// Link público direto no R2 — usado APENAS enquanto o WORKER_URL estiver
+// vazio. Assim que o Worker for configurado, deixe o bucket privado e
+// este link deixa de ser usado.
 const DOWNLOAD_URL = "https://pub-f6e4a6b969db4ef8a2efd42fda361926.r2.dev/Horus-portatil.zip";
 
 // ---------------------------------------------------------------------
@@ -182,7 +189,14 @@ els.downloadBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   const { data } = await sb.auth.getSession();
   if (data.session && data.session.user) {
-    window.location.href = DOWNLOAD_URL;
+    if (WORKER_URL) {
+      // Proteção real: o Worker valida o token antes de entregar o arquivo
+      const token = encodeURIComponent(data.session.access_token);
+      window.location.href = `${WORKER_URL}?token=${token}`;
+    } else {
+      // Fallback: link público direto (enquanto o Worker não está configurado)
+      window.location.href = DOWNLOAD_URL;
+    }
   } else {
     render(null);
     openModal("login");
