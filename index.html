@@ -231,13 +231,13 @@
     </div>
   </section>
 
-  <!-- ========== DOWNLOAD DO APLICATIVO ========== -->
+  <!-- ========== ÁREA DE MEMBROS / DOWNLOAD ========== -->
   <section class="section-download" id="download">
     <div class="download-box reveal">
       <div class="download-info">
-        <span class="section-overline">Download</span>
+        <span class="section-overline">Área de Membros</span>
         <h2>Hórus Portátil</h2>
-        <p>Baixe a versão portátil do aplicativo Hórus. Não requer instalação — basta extrair o arquivo e executar.</p>
+        <p>Baixe a versão portátil do aplicativo Hórus. O download é exclusivo para usuários cadastrados — crie sua conta ou entre para liberar o acesso.</p>
         <ul class="download-meta">
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -249,18 +249,48 @@
           </li>
         </ul>
       </div>
-      <!--
-        ========================================================
-        COLE AQUI A URL PÚBLICA DO SEU ARQUIVO NO CLOUDFLARE R2.
-        Exemplo r2.dev:  https://pub-xxxxxxxx.r2.dev/Horus-portatil.zip
-        Exemplo domínio: https://downloads.seusite.com.br/Horus-portatil.zip
-        Substitua o "#" abaixo pela URL completa.
-        ========================================================
-      -->
-      <a href="https://pub-f6e4a6b969db4ef8a2efd42fda361926.r2.dev/Horus-portatil.zip" class="btn-primary btn-download" download>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Baixar Aplicativo
-      </a>
+
+      <!-- Painel de autenticação (controlado por auth.js) -->
+      <div class="auth-panel">
+
+        <!-- Estado: carregando -->
+        <div class="auth-loading" id="auth-loading">
+          <span class="auth-spinner"></span>
+        </div>
+
+        <!-- Estado: deslogado → login / cadastro -->
+        <div class="auth-forms hidden" id="auth-forms">
+          <div class="auth-tabs">
+            <button type="button" class="auth-tab active" data-tab="login">Entrar</button>
+            <button type="button" class="auth-tab" data-tab="signup">Criar conta</button>
+          </div>
+
+          <form id="form-login" class="auth-form">
+            <input type="email" id="login-email" placeholder="E-mail" autocomplete="email" required>
+            <input type="password" id="login-password" placeholder="Senha" autocomplete="current-password" required>
+            <button type="submit" class="btn-primary btn-full">Entrar</button>
+          </form>
+
+          <form id="form-signup" class="auth-form hidden">
+            <input type="email" id="signup-email" placeholder="E-mail" autocomplete="email" required>
+            <input type="password" id="signup-password" placeholder="Senha (mín. 6 caracteres)" autocomplete="new-password" minlength="6" required>
+            <button type="submit" class="btn-primary btn-full">Criar conta</button>
+          </form>
+
+          <p class="auth-msg" id="auth-msg"></p>
+        </div>
+
+        <!-- Estado: logado → download -->
+        <div class="auth-logged hidden" id="auth-logged">
+          <p class="auth-welcome">Conectado como<br><strong id="user-email"></strong></p>
+          <a href="#" class="btn-primary btn-download" id="download-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Baixar Aplicativo
+          </a>
+          <button type="button" class="auth-logout" id="logout-btn">Sair</button>
+        </div>
+
+      </div>
     </div>
   </section>
 
@@ -315,6 +345,8 @@
   </footer>
 
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
