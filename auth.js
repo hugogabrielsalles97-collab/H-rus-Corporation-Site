@@ -2,10 +2,8 @@
    AUTENTICAÇÃO (Supabase) + LIBERAÇÃO DO DOWNLOAD
    =====================================================================
    COMO CONFIGURAR:
-   1. Cole abaixo, em SUPABASE_URL, a URL do seu projeto Supabase.
-      Onde achar: painel do Supabase → Connect → App Frameworks,
-      ou Settings → Data API → "Project URL".
-      Formato: https://xxxxxxxxxxxxxxxx.supabase.co
+   1. Em SUPABASE_URL, a URL do seu projeto Supabase.
+      (painel → Settings → Data API → "Project URL")
    2. A chave publishable já está preenchida (pode ficar pública).
    ===================================================================== */
 
@@ -19,26 +17,34 @@ const DOWNLOAD_URL = "https://pub-f6e4a6b969db4ef8a2efd42fda361926.r2.dev/Horus-
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Elementos da interface
+const $ = (id) => document.getElementById(id);
+const show = (el) => el && el.classList.remove("hidden");
+const hide = (el) => el && el.classList.add("hidden");
+
 const els = {
-  loading:  document.getElementById("auth-loading"),
-  forms:    document.getElementById("auth-forms"),
-  logged:   document.getElementById("auth-logged"),
-  msg:      document.getElementById("auth-msg"),
-  userEmail:document.getElementById("user-email"),
-  formLogin:  document.getElementById("form-login"),
-  formSignup: document.getElementById("form-signup"),
-  loginEmail:    document.getElementById("login-email"),
-  loginPassword: document.getElementById("login-password"),
-  signupEmail:    document.getElementById("signup-email"),
-  signupPassword: document.getElementById("signup-password"),
-  downloadBtn: document.getElementById("download-btn"),
-  logoutBtn:   document.getElementById("logout-btn"),
-  tabs: document.querySelectorAll(".auth-tab"),
+  // modal
+  modal:      $("auth-modal"),
+  closeBtn:   $("auth-close"),
+  openBtn:    $("open-auth"),
+  // formulários
+  formLogin:  $("form-login"),
+  formSignup: $("form-signup"),
+  loginEmail:     $("login-email"),
+  loginPassword:  $("login-password"),
+  signupEmail:    $("signup-email"),
+  signupPassword: $("signup-password"),
+  msg:        $("auth-msg"),
+  // seção de download
+  loading:    $("auth-loading"),
+  locked:     $("dl-locked"),
+  unlocked:   $("dl-unlocked"),
+  loginTrigger: $("dl-login-trigger"),
+  userEmail:  $("user-email"),
+  downloadBtn:$("download-btn"),
+  logoutBtn:  $("logout-btn"),
 };
 
-function show(el)  { el && el.classList.remove("hidden"); }
-function hide(el)  { el && el.classList.add("hidden"); }
+let isLogged = false;
 
 function setMessage(text, type) {
   els.msg.textContent = text || "";
@@ -57,30 +63,83 @@ function traduzErro(err) {
   return err && err.message ? err.message : "Ocorreu um erro. Tente novamente.";
 }
 
-// Alterna entre os estados visuais conforme a sessão
-function render(session) {
-  hide(els.loading);
-  if (session && session.user) {
-    hide(els.forms);
-    show(els.logged);
-    els.userEmail.textContent = session.user.email;
+/* ----- Modal ----- */
+function openModal(view) {
+  setMessage("");
+  switchView(view || "login");
+  show(els.modal);
+  els.modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  const firstInput = (view === "signup" ? els.signupEmail : els.loginEmail);
+  setTimeout(() => firstInput && firstInput.focus(), 50);
+}
+
+function closeModal() {
+  hide(els.modal);
+  els.modal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+function switchView(view) {
+  setMessage("");
+  if (view === "signup") {
+    show(els.formSignup); hide(els.formLogin);
   } else {
-    hide(els.logged);
-    show(els.forms);
+    show(els.formLogin); hide(els.formSignup);
   }
 }
 
-// Troca de aba (Entrar / Criar conta)
-els.tabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    els.tabs.forEach((t) => t.classList.remove("active"));
-    tab.classList.add("active");
-    setMessage("");
-    if (tab.dataset.tab === "login") {
-      show(els.formLogin); hide(els.formSignup);
-    } else {
-      show(els.formSignup); hide(els.formLogin);
-    }
+/* ----- Estado de login na seção de download ----- */
+function render(session) {
+  hide(els.loading);
+  isLogged = !!(session && session.user);
+  if (isLogged) {
+    hide(els.locked);
+    show(els.unlocked);
+    els.userEmail.textContent = session.user.email;
+    els.openBtn.textContent = "Sair";
+  } else {
+    hide(els.unlocked);
+    show(els.locked);
+    els.openBtn.textContent = "Entrar";
+  }
+}
+
+/* ----- Eventos ----- */
+
+// Botão da navbar: abre login (deslogado) ou faz logout (logado)
+els.openBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  if (isLogged) {
+    await sb.auth.signOut();
+  } else {
+    openModal("login");
+  }
+});
+
+// Botão "Entrar para baixar" da seção de download
+els.loginTrigger.addEventListener("click", () => openModal("login"));
+
+// Fechar modal (X, backdrop)
+els.modal.querySelectorAll("[data-close]").forEach((el) =>
+  el.addEventListener("click", closeModal)
+);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !els.modal.classList.contains("hidden")) closeModal();
+});
+
+// Alternar login <-> cadastro
+els.modal.querySelectorAll(".auth-switch-btn").forEach((btn) =>
+  btn.addEventListener("click", () => switchView(btn.dataset.go))
+);
+
+// Mostrar / ocultar senha
+els.modal.querySelectorAll(".auth-eye").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const input = $(btn.dataset.eye);
+    const showing = input.type === "text";
+    input.type = showing ? "password" : "text";
+    btn.classList.toggle("on", !showing);
   });
 });
 
@@ -93,8 +152,6 @@ els.formSignup.addEventListener("submit", async (e) => {
     password: els.signupPassword.value,
   });
   if (error) { setMessage(traduzErro(error), "error"); return; }
-
-  // Se a confirmação de e-mail estiver ativa, não há sessão imediata
   if (data.session) {
     setMessage("Conta criada com sucesso!", "success");
   } else {
@@ -114,15 +171,13 @@ els.formLogin.addEventListener("submit", async (e) => {
   if (error) { setMessage(traduzErro(error), "error"); return; }
   setMessage("");
   els.formLogin.reset();
+  closeModal();
 });
 
-// Logout
-els.logoutBtn.addEventListener("click", async () => {
-  await sb.auth.signOut();
-  setMessage("");
-});
+// Logout (botão dentro da seção de download)
+els.logoutBtn.addEventListener("click", () => sb.auth.signOut());
 
-// Download — só dispara com sessão ativa (proteção extra no clique)
+// Download — só dispara com sessão ativa
 els.downloadBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   const { data } = await sb.auth.getSession();
@@ -130,11 +185,12 @@ els.downloadBtn.addEventListener("click", async (e) => {
     window.location.href = DOWNLOAD_URL;
   } else {
     render(null);
+    openModal("login");
     setMessage("Sua sessão expirou. Entre novamente para baixar.", "error");
   }
 });
 
-// Estado inicial + reação a login/logout
+/* ----- Estado inicial + reação a login/logout ----- */
 (async () => {
   const { data } = await sb.auth.getSession();
   render(data.session);
