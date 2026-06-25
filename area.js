@@ -29,10 +29,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   setText("user-email", u.email || "");
   setText("welcome-name", firstName);
 
-  const initials = fullName
+  const initials = (fullName
     ? fullName.split(/\s+/).map((p) => p[0]).slice(0, 2).join("")
-    : displayName.charAt(0);
-  setText("user-avatar", initials.toUpperCase());
+    : displayName.charAt(0)).toUpperCase();
+  setText("user-avatar", initials);
+  setText("user-avatar-lg", initials);
 
   /* ---------- Download protegido ---------- */
   async function dispararDownload(e) {
@@ -41,8 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (data.session && data.session.user) baixarAplicativo(data.session);
     else window.location.replace("index.html");
   }
-  const dlBtn = byId("download-btn");
-  if (dlBtn) dlBtn.addEventListener("click", dispararDownload);
+  document.querySelectorAll(".js-download").forEach((el) =>
+    el.addEventListener("click", dispararDownload)
+  );
 
   /* ---------- Logout ---------- */
   async function sair(e) {
@@ -52,10 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   const outBtn = byId("logout-btn");
   if (outBtn) outBtn.addEventListener("click", sair);
-
-  /* ---------- Garante o autoplay do vídeo ---------- */
-  const vid = document.querySelector(".dash-video");
-  if (vid) { const p = vid.play(); if (p && p.catch) p.catch(() => {}); }
 
   /* ---------- Destaque do menu conforme a seção visível ---------- */
   const links = Array.from(document.querySelectorAll(".sidebar-link"));
